@@ -42,11 +42,15 @@ Cuando un conjunto de usuarios consulta un enésimo número (superior a 1000000)
 
     ` node FibonacciApp.js`
 
-6. Antes de verificar si el endpoint funciona, en Azure vaya a la sección de *Networking* y cree una *Inbound port rule* tal como se muestra en la imágen. Para verificar que la aplicación funciona, use un browser y user el endpoint `http://xxx.xxx.xxx.xxx:3000/fibonacci/6`. La respuesta debe ser `The answer is 8`.
-
+6. Antes de verificar si el endpoint funciona, en Azure vaya a la sección de *Networking* y cree una *Inbound port rule* tal como se muestra en la imágen. Para verificar que la    aplicación funciona, use un browser y user el endpoint `http://xxx.xxx.xxx.xxx:3000/fibonacci/6`. La respuesta debe ser `The answer is 8`.
 ![](images/part1/part1-vm-3000InboudRule.png)
 
-7. La función que calcula en enésimo número de la secuencia de Fibonacci está muy mal construido y consume bastante CPU para obtener la respuesta. Usando la consola del Browser documente los tiempos de respuesta para dicho endpoint usando los siguintes valores:
+   Evidencia:
+
+   ![image](https://github.com/Tianrojas/Lab9-ARSW_LOAD-BALANCING_AZURE/assets/62759668/599689c9-7613-46f8-8e62-e704c8719d44)
+   
+
+8. La función que calcula en enésimo número de la secuencia de Fibonacci está muy mal construido y consume bastante CPU para obtener la respuesta. Usando la consola del Browser documente los tiempos de respuesta para dicho endpoint usando los siguintes valores:
     * 1000000
     * 1010000
     * 1020000
@@ -56,11 +60,17 @@ Cuando un conjunto de usuarios consulta un enésimo número (superior a 1000000)
     * 1060000
     * 1070000
     * 1080000
-    * 1090000    
+    * 1090000
+     
+    ![image](https://github.com/Tianrojas/Lab9-ARSW_LOAD-BALANCING_AZURE/assets/62759668/5553fdaa-c100-4f25-8cdc-f784de758c75)
+ 
 
-8. Dírijase ahora a Azure y verifique el consumo de CPU para la VM. (Los resultados pueden tardar 5 minutos en aparecer).
+9. Dírijase ahora a Azure y verifique el consumo de CPU para la VM. (Los resultados pueden tardar 5 minutos en aparecer).
+   ![Imágen 2](images/part1/part1-vm-cpu.png)
 
-![Imágen 2](images/part1/part1-vm-cpu.png)
+   Evidencia:
+   ![image](https://github.com/Tianrojas/Lab9-ARSW_LOAD-BALANCING_AZURE/assets/62759668/0af37f0c-d7e7-4257-99e5-f9e9f081425a)
+
 
 9. Ahora usaremos Postman para simular una carga concurrente a nuestro sistema. Siga estos pasos.
     * Instale newman con el comando `npm install newman -g`. Para conocer más de Newman consulte el siguiente [enlace](https://learning.getpostman.com/docs/postman/collection-runs/command-line-integration-with-newman/).
