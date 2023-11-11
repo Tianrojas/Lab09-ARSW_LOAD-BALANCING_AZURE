@@ -82,6 +82,12 @@ Cuando un conjunto de usuarios consulta un enésimo número (superior a 1000000)
     newman run ARSW_LOAD-BALANCING_AZURE.postman_collection.json -e [ARSW_LOAD-BALANCING_AZURE].postman_environment.json -n 10 &
     newman run ARSW_LOAD-BALANCING_AZURE.postman_collection.json -e [ARSW_LOAD-BALANCING_AZURE].postman_environment.json -n 10
     ```
+    ![image](https://github.com/Tianrojas/Lab09-ARSW_LOAD-BALANCING_AZURE/assets/62759668/596522d2-ce08-45f8-a318-052d8403e031)
+    ![image](https://github.com/Tianrojas/Lab09-ARSW_LOAD-BALANCING_AZURE/assets/62759668/e5f871b6-7d5d-4f29-9a29-ba5ad7b756c4)
+
+  
+    
+
 
 10. La cantidad de CPU consumida es bastante grande y un conjunto considerable de peticiones concurrentes pueden hacer fallar nuestro servicio. Para solucionarlo usaremos una estrategia de Escalamiento Vertical. En Azure diríjase a la sección *size* y a continuación seleccione el tamaño `B2ms`.
 
