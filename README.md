@@ -150,7 +150,7 @@ En cuanto a la creación de una regla de puerto entrante (Inbound port rule), es
     * Tiempos de ejecución de cada petición.
     * Si hubo fallos documentelos y explique.
       ![image](https://github.com/Tianrojas/Lab09-ARSW_LOAD-BALANCING_AZURE/assets/62759668/99f13aab-4b20-462c-af2e-317af997da08)
-      ![image](https://github.com/Tianrojas/Lab09-ARSW_LOAD-BALANCING_AZURE/assets/62759668/864b71d5-3845-4d4a-9175-a1308b17b4c4) 
+      ![image](https://github.com/Tianrojas/Lab09-ARSW_LOAD-BALANCING_AZURE/assets/62759668/864b71d5-3845-4d4a-9175-a1308b17b4c4) \
       Los tiempos de ejecución aunque tienen gran diferencia a los iniciales, se siguen presentando fallos, se cree que es debido a la estabilidad de la conexión de la maquina virtual. 
 7. ¿Cuál es la diferencia entre los tamaños `B2ms` y `B1ls` (no solo busque especificaciones de infraestructura)? \
    Los tamaños B2ms y B1ls pertenecen a la serie B de Azure, que son máquinas virtuales ampliables. Estas máquinas virtuales están diseñadas para cargas de trabajo que no necesitan el rendimiento completo de la CPU de forma continua, como servidores web, pruebas de concepto, bases de datos pequeñas y entornos de desarrollo. \
@@ -170,13 +170,12 @@ No obstante, es crucial tener en cuenta que solo un servidor está manejando tod
    newman run ARSW_LOAD-BALANCING_AZURE.postman_collection.json -e [ARSW_LOAD-BALANCING_AZURE].postman_environment.json -n 4
    ```
    Se obtiene: \
-   ![image](https://github.com/Tianrojas/Lab09-ARSW_LOAD-BALANCING_AZURE/assets/62759668/ab1328b6-d058-478b-a377-297995b067ce)
-   
+   ![image](https://github.com/Tianrojas/Lab09-ARSW_LOAD-BALANCING_AZURE/assets/62759668/ab1328b6-d058-478b-a377-297995b067ce)   
    ![image](https://github.com/Tianrojas/Lab09-ARSW_LOAD-BALANCING_AZURE/assets/62759668/55e30c8c-5f46-401b-b02d-189f19c113c5)
-
    ![image](https://github.com/Tianrojas/Lab09-ARSW_LOAD-BALANCING_AZURE/assets/62759668/8bd29f41-ac1e-40fc-ac9f-0ad76e17d364)
-
-   ![image](https://github.com/Tianrojas/Lab09-ARSW_LOAD-BALANCING_AZURE/assets/62759668/9315651e-ed11-4620-ae7a-9860378d37cd)
+   ![image](https://github.com/Tianrojas/Lab09-ARSW_LOAD-BALANCING_AZURE/assets/62759668/9315651e-ed11-4620-ae7a-9860378d37cd) \
+   No mejora.
+   
    
 
    
