@@ -91,27 +91,95 @@ Cuando un conjunto de usuarios consulta un enésimo número (superior a 1000000)
 
 10. La cantidad de CPU consumida es bastante grande y un conjunto considerable de peticiones concurrentes pueden hacer fallar nuestro servicio. Para solucionarlo usaremos una estrategia de Escalamiento Vertical. En Azure diríjase a la sección *size* y a continuación seleccione el tamaño `B2ms`.
 
-![Imágen 3](images/part1/part1-vm-resize.png)
+    ![Imágen 3](images/part1/part1-vm-resize.png)
 
 11. Una vez el cambio se vea reflejado, repita el paso 7, 8 y 9.
-12. Evalue el escenario de calidad asociado al requerimiento no funcional de escalabilidad y concluya si usando este modelo de escalabilidad logramos cumplirlo.
-13. Vuelva a dejar la VM en el tamaño inicial para evitar cobros adicionales.
+    ![image](https://github.com/Tianrojas/Lab09-ARSW_LOAD-BALANCING_AZURE/assets/62759668/ca638b12-1e6a-4289-a0c5-d49ea9ad5cac)
+    ![image](https://github.com/Tianrojas/Lab09-ARSW_LOAD-BALANCING_AZURE/assets/62759668/cee8ac4e-1378-4345-92fd-14b2eda38adf)
+    ![image](https://github.com/Tianrojas/Lab09-ARSW_LOAD-BALANCING_AZURE/assets/62759668/99f13aab-4b20-462c-af2e-317af997da08)
+    ![image](https://github.com/Tianrojas/Lab09-ARSW_LOAD-BALANCING_AZURE/assets/62759668/864b71d5-3845-4d4a-9175-a1308b17b4c4)  
+
+      
+  
+13. Evalue el escenario de calidad asociado al requerimiento no funcional de escalabilidad y concluya si usando este modelo de escalabilidad logramos cumplirlo. \
+    El escenario de calidad delineado se ha validado de manera efectiva mediante la aplicación de escalabilidad vertical. Al incrementar las características de la máquina virtual, se optimiza de manera más eficiente, generando una reducción significativa en los tiempos de respuesta de las solicitudes en comparación con situaciones anteriores. Esta mejora se refleja de manera clara en la representación visual, donde se evidencia la disminución notable en el consumo de CPU de la máquina virtual.
+
+
+14. Vuelva a dejar la VM en el tamaño inicial para evitar cobros adicionales.
 
 **Preguntas**
 
 1. ¿Cuántos y cuáles recursos crea Azure junto con la VM?
+   * Grupo de recursos
+   * Red virtual (VNet)
+   * Interfaz de red (NIC)
+   * Dirección IP pública
+   * Discos
+   * Grupo de seguridad de red (NSG)
+   * Almacenamiento
 2. ¿Brevemente describa para qué sirve cada recurso?
-3. ¿Al cerrar la conexión ssh con la VM, por qué se cae la aplicación que ejecutamos con el comando `npm FibonacciApp.js`? ¿Por qué debemos crear un *Inbound port rule* antes de acceder al servicio?
+   * Grupo de recursos: Un contenedor que almacena recursos relacionados para una aplicación Azure. El grupo de recursos incluye aquellos recursos que se crean con la VM, como las redes virtuales y los discos.
+   * Red virtual (VNet): Cada VM se conecta a una red virtual en la que puede comunicarse con otras VM dentro de la misma red.
+   * Interfaz de red (NIC): Cada VM tiene una o más NIC para comunicarse con la red virtual.
+   * Dirección IP pública: Si se configura, la VM puede tener una dirección IP pública para comunicarse con Internet.
+   * Discos: Cada VM tiene al menos un disco para el sistema operativo y puede tener discos adicionales para datos.
+   * Grupo de seguridad de red (NSG): Un NSG contiene reglas de seguridad que permiten o deniegan el tráfico de red entrante a la VM.
+   * Almacenamiento: Los discos de las VM se almacenan en una cuenta de almacenamiento de Azure 
+3. ¿Al cerrar la conexión ssh con la VM, por qué se cae la aplicación que ejecutamos con el comando `npm FibonacciApp.js`? ¿Por qué debemos crear un *Inbound port rule* antes de acceder al servicio? \
+   Cuando se ejecuta una aplicación en una sesión SSH y luego se cierra la sesión, la aplicación también se cierra. Esto se debe a que la aplicación se está ejecutando en el contexto de la sesión SSH. Cuando la sesión se cierra, todos los procesos asociados a esa sesión también se cierran. \
+Para mantener la aplicación en ejecución después de cerrar la sesión SSH, se puede utilizar herramientas como screen, tmux o nohup. Estas herramientas permiten que los procesos continúen ejecutándose en segundo plano, incluso después de cerrar la sesión SSH1. \
+En cuanto a la creación de una regla de puerto entrante (Inbound port rule), es necesaria para permitir el tráfico entrante a la aplicación desde fuera de la red de Azure. Azure, al igual que muchos otros proveedores de servicios en la nube, bloquea todo el tráfico entrante por defecto por razones de seguridad. Por lo tanto, se debe crear una regla de puerto entrante para permitir las conexiones a tu aplicación.
+
 4. Adjunte tabla de tiempos e interprete por qué la función tarda tando tiempo.
+   | N             | Standard_B1ls (s)    | Standars_B2ms (s) |
+   |---------------|----------------------|-------------------|
+   | 1000000       | 20.91 s              | 15.78 s           |
+   | 1010000       | 42.24 s              | 31.70 s           |
+   | 1020000       | 63.86 s              | 47.63 s           |
+   | 1030000       | 13.18 s              | 63.99 s           |
+   | 1040000       | 20.97 s              | 80.69 s           |
+   | 1050000       | 86.90 s              | 97.68 s           |
+   | 1060000       | 20.39 s              | 11.50 s           |
+   | 1070000       | 15.60 s              | 13.34 s           |
+   | 1080000       | 18.04 s              | 17.12 s           | 
+   | 1090000       | 22.91 s              | 15.27 s           |
 5. Adjunte imágen del consumo de CPU de la VM e interprete por qué la función consume esa cantidad de CPU.
+   ![image](https://github.com/Tianrojas/Lab09-ARSW_LOAD-BALANCING_AZURE/assets/62759668/cee8ac4e-1378-4345-92fd-14b2eda38adf) \
+   Cada solicitud ejecutada ejerce una carga significativa en la unidad central de procesamiento (CPU) debido a la ejecución de cálculos redundantes. Esto se debe a la falta de aplicación de métodos o técnicas, como la memorización, que posibiliten el almacenamiento de cálculos previamente realizados. Además, la ausencia de implementación de concurrencia resulta en un mayor consumo de recursos y un tiempo de respuesta prolongado.
 6. Adjunte la imagen del resumen de la ejecución de Postman. Interprete:
     * Tiempos de ejecución de cada petición.
     * Si hubo fallos documentelos y explique.
-7. ¿Cuál es la diferencia entre los tamaños `B2ms` y `B1ls` (no solo busque especificaciones de infraestructura)?
-8. ¿Aumentar el tamaño de la VM es una buena solución en este escenario?, ¿Qué pasa con la FibonacciApp cuando cambiamos el tamaño de la VM?
+      ![image](https://github.com/Tianrojas/Lab09-ARSW_LOAD-BALANCING_AZURE/assets/62759668/99f13aab-4b20-462c-af2e-317af997da08)
+      ![image](https://github.com/Tianrojas/Lab09-ARSW_LOAD-BALANCING_AZURE/assets/62759668/864b71d5-3845-4d4a-9175-a1308b17b4c4) 
+      Los tiempos de ejecución aunque tienen gran diferencia a los iniciales, se siguen presentando fallos, se cree que es debido a la estabilidad de la conexión de la maquina virtual. 
+7. ¿Cuál es la diferencia entre los tamaños `B2ms` y `B1ls` (no solo busque especificaciones de infraestructura)? \
+   Los tamaños B2ms y B1ls pertenecen a la serie B de Azure, que son máquinas virtuales ampliables. Estas máquinas virtuales están diseñadas para cargas de trabajo que no necesitan el rendimiento completo de la CPU de forma continua, como servidores web, pruebas de concepto, bases de datos pequeñas y entornos de desarrollo. \
+   La principal diferencia entre B2ms y B1ls radica en sus capacidades y uso previsto:
+      * B2ms: Este tamaño de máquina virtual tiene 2 vCPU, 8 GiB de memoria y 16 GiB de almacenamiento temporal (SSD). El rendimiento base de la CPU de la máquina virtual es del 60%, con créditos iniciales de 60 y puede acumular hasta 864 créditos1. Este tamaño es adecuado para cargas de trabajo que requieren más memoria y capacidad de CPU.
+      * B1ls: Este tamaño de máquina virtual tiene 1 vCPU, 0.5 GiB de memoria y 4 GiB de almacenamiento temporal (SSD). El rendimiento base de la CPU de la máquina virtual es del 10%, con créditos iniciales de 30 y puede acumular hasta 72 créditos1. Este tamaño es el más pequeño y menos costoso disponible en Azure y es adecuado para cargas de trabajo muy ligeras o para pruebas de concepto1.
+8. ¿Aumentar el tamaño de la VM es una buena solución en este escenario?, ¿Qué pasa con la FibonacciApp cuando cambiamos el tamaño de la VM? \
+   A pesar de que incrementar las dimensiones de la máquina virtual resulta en una reducción del consumo de recursos (como se evidenció en la utilización de la CPU), aún es necesario reconsiderar la estructura de FibonacciApp para que memorice los valores previamente calculados. Este ajuste busca optimizar aún más los tiempos de respuesta de la aplicación. \
+No obstante, es crucial tener en cuenta que solo un servidor está manejando todas las solicitudes web, lo que significa que no se garantiza una disponibilidad constante en caso de una avalancha de peticiones.
 9. ¿Qué pasa con la infraestructura cuando cambia el tamaño de la VM? ¿Qué efectos negativos implica?
+   La reinicialización de la máquina virtual implica la necesidad de establecer una nueva conexión segura mediante el protocolo SSH. Este reinicio resulta en un periodo en el cual la máquina no está disponible para ofrecer sus servicios web, lo que conlleva a la falta de atención a todas las peticiones que se realicen durante dicho lapso.
 10. ¿Hubo mejora en el consumo de CPU o en los tiempos de respuesta? Si/No ¿Por qué?
+   Si, dado que la máquina virtual dispone de más recursos para realizar sus cálculos y atender a las peticiones.
 11. Aumente la cantidad de ejecuciones paralelas del comando de postman a `4`. ¿El comportamiento del sistema es porcentualmente mejor?
+   Utilizando, con el size inicial
+   ```
+   newman run ARSW_LOAD-BALANCING_AZURE.postman_collection.json -e [ARSW_LOAD-BALANCING_AZURE].postman_environment.json -n 4
+   ```
+   Se obtiene: \
+   ![image](https://github.com/Tianrojas/Lab09-ARSW_LOAD-BALANCING_AZURE/assets/62759668/ab1328b6-d058-478b-a377-297995b067ce)
+   
+   ![image](https://github.com/Tianrojas/Lab09-ARSW_LOAD-BALANCING_AZURE/assets/62759668/55e30c8c-5f46-401b-b02d-189f19c113c5)
+
+   ![image](https://github.com/Tianrojas/Lab09-ARSW_LOAD-BALANCING_AZURE/assets/62759668/8bd29f41-ac1e-40fc-ac9f-0ad76e17d364)
+
+   ![image](https://github.com/Tianrojas/Lab09-ARSW_LOAD-BALANCING_AZURE/assets/62759668/9315651e-ed11-4620-ae7a-9860378d37cd)
+   
+
+   
 
 ### Parte 2 - Escalabilidad horizontal
 
