@@ -244,6 +244,17 @@ forever start FibonacciApp.js
 
 Realice este proceso para las 3 VMs, por ahora lo haremos a mano una por una, sin embargo es importante que usted sepa que existen herramientas para aumatizar este proceso, entre ellas encontramos Azure Resource Manager, OsDisk Images, Terraform con Vagrant y Paker, Puppet, Ansible entre otras.
 
+Se crearon 2VM sin problemas, en la tercera hubieron problemas en los creditos de azure
+![image](https://github.com/Tianrojas/Lab09-ARSW_LOAD-BALANCING_AZURE/assets/62759668/69b5cc04-4000-47cd-ae47-d298adb88cbb)
+![image](https://github.com/Tianrojas/Lab09-ARSW_LOAD-BALANCING_AZURE/assets/62759668/66145ebc-6784-4339-b554-386672f12f26)
+
+El balanceador
+![image](https://github.com/Tianrojas/Lab09-ARSW_LOAD-BALANCING_AZURE/assets/62759668/ad05fb43-bb70-4787-abc1-67adec580c2e)
+
+Y el resto de componentes
+![image](https://github.com/Tianrojas/Lab09-ARSW_LOAD-BALANCING_AZURE/assets/62759668/1ddf6ea5-1f2b-4078-a563-57418bb1ebe5)
+
+
 #### Probar el resultado final de nuestra infraestructura
 
 1. Porsupuesto el endpoint de acceso a nuestro sistema será la IP pública del balanceador de carga, primero verifiquemos que los servicios básicos están funcionando, consuma los siguientes recursos:
@@ -252,10 +263,18 @@ Realice este proceso para las 3 VMs, por ahora lo haremos a mano una por una, si
 http://52.155.223.248/
 http://52.155.223.248/fibonacci/1
 ```
+![image](https://github.com/Tianrojas/Lab09-ARSW_LOAD-BALANCING_AZURE/assets/62759668/5190533e-b470-4394-ad17-7e02b755de94)
+![image](https://github.com/Tianrojas/Lab09-ARSW_LOAD-BALANCING_AZURE/assets/62759668/2eefc0d7-d99c-44d8-9b71-828e7ca1480c)
 
 2. Realice las pruebas de carga con `newman` que se realizaron en la parte 1 y haga un informe comparativo donde contraste: tiempos de respuesta, cantidad de peticiones respondidas con éxito, costos de las 2 infraestrucruras, es decir, la que desarrollamos con balanceo de carga horizontal y la que se hizo con una maquina virtual escalada.
 
-3. Agregue una 4 maquina virtual y realice las pruebas de newman, pero esta vez no lance 2 peticiones en paralelo, sino que incrementelo a 4. Haga un informe donde presente el comportamiento de la CPU de las 4 VM y explique porque la tasa de éxito de las peticiones aumento con este estilo de escalabilidad.
+    |Escalamiento|Costos    |Tiempo promedio de respuesta|Peticiones Exitosas|
+    |:----------:|:--------:|:--------------------------:|:-----------------:|
+    |  Vertical  | $66.48  |             25.3s           |         20        |
+    | Horizontal |  $16.69  |             26.6s          |         19        |
+
+3. Agregue una 4 maquina virtual y realice las pruebas de newman, pero esta vez no lance 2 peticiones en paralelo, sino que incrementelo a 4
+4. Haga un informe donde presente el comportamiento de la CPU de las 4 VM y explique porque la tasa de éxito de las peticiones aumento con este estilo de escalabilidad.
 
 ```
 newman run ARSW_LOAD-BALANCING_AZURE.postman_collection.json -e [ARSW_LOAD-BALANCING_AZURE].postman_environment.json -n 10 &
@@ -263,18 +282,60 @@ newman run ARSW_LOAD-BALANCING_AZURE.postman_collection.json -e [ARSW_LOAD-BALAN
 newman run ARSW_LOAD-BALANCING_AZURE.postman_collection.json -e [ARSW_LOAD-BALANCING_AZURE].postman_environment.json -n 10 &
 newman run ARSW_LOAD-BALANCING_AZURE.postman_collection.json -e [ARSW_LOAD-BALANCING_AZURE].postman_environment.json -n 10
 ```
+   * VM1 \
+     ![image](https://github.com/Tianrojas/Lab09-ARSW_LOAD-BALANCING_AZURE/assets/62759668/7e68d64b-add0-4036-9767-54fc0ea405ba)
+   * VM2 \
+     ![image](https://github.com/Tianrojas/Lab09-ARSW_LOAD-BALANCING_AZURE/assets/62759668/9b2bb35d-abd4-4298-84de-c752f66d08f2)  
 
 **Preguntas**
 
 * ¿Cuáles son los tipos de balanceadores de carga en Azure y en qué se diferencian?, ¿Qué es SKU, qué tipos hay y en qué se diferencian?, ¿Por qué el balanceador de carga necesita una IP pública?
+    * Tipos de balanceadores:
+        * **Balanceador de carga interno( Privado ):** Este balanceador de carga se encarga de equilibrar la carga de trafico de una red privada ( se utilizan unicamente direcciones ip privadas en la interfaz).
+
+        * **Balanceador de carga publico:** Este balanceador de carga se encarga de equilibrar la carga de trafico de redes publicas, especificamente de la carga proveniente de internet, la dirección ip pública y el puerto son asigandos. 
+
+        * **Balanceador de carga de puerta de enlace:** Es un balanceador que se adapta a escenarios de alto rendimiento y alta disponibilidad con dispositivos virtuales de red (NVA) de terceros. Con las capacidades de Gateway Load Balancer, puede implementar, escalar y administrar NVA fácilmente. Encadenar un balanceador de carga de puerta de enlace a su punto final público solo requiere un clic.
+        
+    * SKU( Stock Keeping Unit) Azure:
+        * Representa una unidad de mantenimiento de existencias, lo cual significa que es un codigo unico asignado a un servicio o producto de Azure, el cual nos permite a nosotros como usuarios la posibilidad de comprar existencias de los mismos.
+    * Tipos de SKU:
+        *  **Estándar:** Productos estandar los cuales se pueden vender de manera individual o en paquetes, 
+        *  **Esamblaje: Aquellos productos que se deben ensamblar antes de un envio, todos los SKU deberan encontrarse dentro de una misma instalacion.** 
+        *  **Virtual: Aquellos productos que son virtuales, es decir que no necesitan de una instalacion fisica evitando asi un nivel de inventario** 
+        *  **Componente: Productos incluidos en paquetes, esamblajes y colecciones, los cuales no se pueden vender de manera individual** 
+
 * ¿Cuál es el propósito del *Backend Pool*?
+   El Backend Pool constituye una parte esencial del equilibrador de carga, siendo responsable de especificar el conjunto de recursos encargados de gestionar el tráfico asociado a una regla de equilibrio determinada. Este conjunto se compone de máquinas virtuales o instancias encargadas de procesar las solicitudes que llegan. Para lograr una expansión eficiente y hacer frente a grandes volúmenes de tráfico entrante, se suele sugerir la adición de más instancias a este grupo.
 * ¿Cuál es el propósito del *Health Probe*?
+   Al configurar un nuevo equilibrador de carga, se establece una sonda de salud que el balanceador utiliza para evaluar el estado de las instancias dentro del Backend Pool. Si una instancia falla un número predefinido de veces, el balanceador dejará de dirigir tráfico hacia esa instancia hasta que supere nuevamente las pruebas de estado.
 * ¿Cuál es el propósito de la *Load Balancing Rule*? ¿Qué tipos de sesión persistente existen, por qué esto es importante y cómo puede afectar la escalabilidad del sistema?.
+   Una Load Balancing Rule de un Load Balancer se usa para definir la manera de distibuir el tráfico entrante a todas las instancias dentro del Backend Pool. En Azure existen tres tipos de sesión de persistencia:
+   * None (hash-based): Especifica que las solicitudes sucesivas del mismo cliente pueden ser manejadas por cualquier máquina virtual. Los paquetes de la misma sesión TCP o UDP se dirigirán a la misma instancia de IP del Datacenter (DIP), pero cuando el cliente cierra y vuelve a abrir la conexión o inicia una nueva sesión desde la misma IP de origen, el puerto de origen cambia y hace que el tráfico vaya a un DIP diferente. \
+     ![image](https://github.com/Tianrojas/Lab09-ARSW_LOAD-BALANCING_AZURE/assets/62759668/54279c48-6047-46d8-a57e-0ab9774893e8)
+   *   Client IP (source IP affinity 2-tuple o 3-tuple): Especifica que las peticiones sucesivas de la misma dirección IP del cliente serán gestionadas por la misma máquina virtual. Azure Load Balancer se puede configurar para usar 2 tuplas (IP de origen, IP de destino) o 3 tuplas (IP de origen, IP de destino, Protocolo) para asignar el tráfico a los servidores disponibles. \
+     ![image](https://github.com/Tianrojas/Lab09-ARSW_LOAD-BALANCING_AZURE/assets/62759668/02e7f81a-c62c-487e-aeda-21d46e491629) 
+ 
 * ¿Qué es una *Virtual Network*? ¿Qué es una *Subnet*? ¿Para qué sirven los *address space* y *address range*?
+    * Red Virtual: Una red virtual es una infraestructura de red que posibilita la interconexión de dispositivos y máquinas virtuales mediante software, sin depender de una ubicación física específica.
+
+    * Subnet: Se trata de una subdivisión de una red física o virtual. Estas divisiones cuentan con su propio rango de direcciones IP, determinado por la forma en que se particiona la dirección IP original.
+
+    * Address Space: Al crear una red virtual, es necesario especificar un conjunto de direcciones IP que no se superpongan entre sí. En otras palabras, el address space es la dirección IP que identifica única y exclusivamente a esa red, por ejemplo, 10.0.0.0/24.
+
+    * Address Range: Define la cantidad de direcciones que están disponibles o pueden estarlo en un address space. Dependiendo de los recursos necesarios en la red virtual, el rango puede aumentar o disminuir, adaptándose a las exigencias específicas de la infraestructura.
 * ¿Qué son las *Availability Zone* y por qué seleccionamos 3 diferentes zonas?. ¿Qué significa que una IP sea *zone-redundant*?
+    * Zonas de Disponibilidad:
+Las Zonas de Disponibilidad son ubicaciones geográficas únicas dentro de una región. Cada zona está compuesta por uno o más centros de datos equipados con sistemas independientes de alimentación, refrigeración y redes. La elección de tres zonas de disponibilidad diferentes se realiza con el objetivo de mejorar la disponibilidad y la tolerancia a fallos del sistema. En caso de que alguno de los centros de datos mencionados falle, el load balancer redirigirá el tráfico hacia otro nodo de la red ubicado en una geolocalización diferente. Este enfoque garantiza resiliencia y reduce la probabilidad de que el sistema esté no disponible.
+
+    * IP Zone-Redundant:
+Un gateway con redundancia de zona IP aporta resistencia, escalabilidad y disponibilidad al sistema. Al emplear una IP zone-redundant en Azure, se logra la separación física y lógica del gateway dentro de una región. Este enfoque mejora la conectividad de la red privada y reduce los fallos a nivel de zona de disponibilidad. La redundancia de zona en la dirección IP asegura que, en caso de problemas en una zona específica, la conectividad persista a través de otras zonas, fortaleciendo así la robustez del sistema.
 * ¿Cuál es el propósito del *Network Security Group*?
+    El Network Security Group cumple con el propósito de filtrar el tráfico que fluye hacia y desde los recursos en una red virtual de Azure. Este grupo de seguridad posibilita la definición de reglas de entrada y/o salida que controlan la autorización o denegación del tráfico de red, tanto entrante como saliente, para diversos tipos de recursos en la plataforma de Azure. En esencia, el NSG ofrece un mecanismo flexible y personalizable para gestionar de manera precisa la seguridad de la red, permitiendo a los usuarios especificar las condiciones bajo las cuales se permite o bloquea el intercambio de datos entre los recursos en la infraestructura de Azure.
 * Informe de newman 1 (Punto 2)
-* Presente el Diagrama de Despliegue de la solución.
+* Presente el Diagrama de Despliegue de la solución. Suponiendo que se permite la creacion de las 4 VM
+   ![image](https://github.com/Tianrojas/Lab09-ARSW_LOAD-BALANCING_AZURE/assets/62759668/967cea75-ff05-4270-9b64-965b7408e8fa)
+
 
 
 
