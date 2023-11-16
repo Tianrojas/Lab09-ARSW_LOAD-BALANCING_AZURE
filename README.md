@@ -263,8 +263,8 @@ Y el resto de componentes
 http://52.155.223.248/
 http://52.155.223.248/fibonacci/1
 ```
-![image](https://github.com/Tianrojas/Lab09-ARSW_LOAD-BALANCING_AZURE/assets/62759668/5190533e-b470-4394-ad17-7e02b755de94)
-![image](https://github.com/Tianrojas/Lab09-ARSW_LOAD-BALANCING_AZURE/assets/62759668/2eefc0d7-d99c-44d8-9b71-828e7ca1480c)
+![image](https://github.com/Tianrojas/Lab09-ARSW_LOAD-BALANCING_AZURE/assets/62759668/160bb58e-f85c-42fc-8c8f-ec47218f3db9)
+![image](https://github.com/Tianrojas/Lab09-ARSW_LOAD-BALANCING_AZURE/assets/62759668/4190cb5a-a61f-43b3-a984-7cc515831d3e)
 
 2. Realice las pruebas de carga con `newman` que se realizaron en la parte 1 y haga un informe comparativo donde contraste: tiempos de respuesta, cantidad de peticiones respondidas con éxito, costos de las 2 infraestrucruras, es decir, la que desarrollamos con balanceo de carga horizontal y la que se hizo con una maquina virtual escalada.
 
